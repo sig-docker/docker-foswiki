@@ -41,9 +41,11 @@ RUN mkdir -p /var/www && \
     mkdir -p /run/nginx && \
     mkdir -p /etc/nginx/conf.d
 
-
 COPY nginx.default.conf /etc/nginx/conf.d/default.conf
 COPY docker-entrypoint.sh docker-entrypoint.sh
+
+RUN mkdir /foswiki_init /foswiki_persist && \
+    for d in pub data templates; do mv /var/www/foswiki/$d /foswiki_init; ln -s /foswiki_persist/$d /var/www/foswiki/$d; done
 
 EXPOSE 80
 
